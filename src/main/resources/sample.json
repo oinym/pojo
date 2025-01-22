@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "name": "Parent Object 1",
+    "age":20,
+    "average-grade":76,
+    "math":false,
+    "studies":[{"physics":{"grade":34}}],
+    "children": [
+      {
+        "id": 2,
+        "name": "Child Object 1.1",
+        "grade":80,
+        "children": []
+      },
+      {
+        "id": 3,
+        "average":90,
+        "name": "Child Object 1.2",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Parent Object 2",
+    "children": [
+      {
+        "id": 5,
+        "name": "Child Object 2.1",
+        "age":15,
+        "children": []
+      }
+    ]
+  }
+]
