@@ -1,12 +1,13 @@
 package com.oinym.generated;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class CSVParser {
-
-  public static <T> List<T> parseCSV(File file, Class<T> clazz) throws Exception {
+  public static <T> List<T> parseCSV(File file, Class<T> clazz, Map<String, String> fieldMapping) throws Exception {
     List<T> resultList = new ArrayList<>();
+
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       String headerLine = br.readLine();
       if (headerLine == null) {
@@ -22,15 +23,17 @@ public class CSVParser {
         T obj = clazz.getDeclaredConstructor().newInstance();
 
         for (int i = 0; i < values.length; i++) {
-          String fieldName = headerList.get(i).trim();
-          String value = values[i].trim();
+          String fileColumn = headerList.get(i).trim();
+          String javaField = fieldMapping.get(fileColumn); // Map column to Java field
 
-          try {
-            var field = clazz.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(obj, value);
-          } catch (NoSuchFieldException ignored) {
-            // Ignore missing fields
+          if (javaField != null) {
+            try {
+              Field field = clazz.getDeclaredField(javaField);
+              field.setAccessible(true);
+              field.set(obj, values[i].trim());
+            } catch (NoSuchFieldException ignored) {
+              // Ignore missing fields
+            }
           }
         }
 
